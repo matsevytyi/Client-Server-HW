@@ -42,13 +42,15 @@ public class Packet {
     }
 
     public Message getMessage() {
-        return new Message(bMsg);
+        return new Message(this.bMsg);
     }
 
-    public byte[] encrypt(byte[] data, String key) throws NoSuchPaddingException, NoSuchAlgorithmException, IllegalBlockSizeException, BadPaddingException {
-        Cipher cipher = Cipher.getInstance(key);
-        // instance and key
-        return cipher.doFinal(data);
+    public byte getbSrc() {
+        return this.bSrc;
+    }
+
+    public byte[] getbPktId() {
+        return this.bPktId;
     }
 
     public static byte[] calculateCrc16(byte[] data) {
