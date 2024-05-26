@@ -38,7 +38,8 @@ public class PacketDecoder {
 
         byte[] decryptedMessage = decrypt(Arrays.copyOfRange(input, 16, 16 + MessageLength), privateKey);
 
-        if(!Arrays.equals(init_crc16, actual_crc16) || !Arrays.equals(init_crc16e, actual_crc16e)) throw new IllegalArgumentException("Packet is broken: Crc16 validation error");
+        if(!Arrays.equals(init_crc16, actual_crc16) || !Arrays.equals(init_crc16e, actual_crc16e))
+            throw new IllegalArgumentException("Packet is broken: Crc16 validation error");
 
         return new Packet(input[1], Arrays.copyOfRange(input, 2, 10), decryptedMessage);
     }

@@ -1,10 +1,5 @@
 package org.example;
 
-import javax.crypto.BadPaddingException;
-import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.NoSuchPaddingException;
-import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
 public class Packet {
@@ -26,7 +21,6 @@ public class Packet {
         this.wLen = new byte[]{(byte) ((msgLen >> 24) & 0xFF), (byte) ((msgLen >> 16) & 0xFF), (byte) ((msgLen >> 8) & 0xFF), (byte) (msgLen & 0xFF)}; //get from message to bytes
         this.bMsg = message;
         this.wCrc16e = calculateCrc16(bMsg);
-        //encrypt message
     }
 
     public byte[] toBytes() {
