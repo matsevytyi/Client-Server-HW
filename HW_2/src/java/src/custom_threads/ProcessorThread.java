@@ -1,10 +1,11 @@
-package server;
+package src.custom_threads;
 
-import org.example.CustomKey;
-import org.example.Message;
-import org.example.Packet;
+import src.packet_handling.CustomKey;
+import src.packet_handling.Message;
+import src.packet_handling.Packet;
+import src.server.MTEncoder;
 
-class ProcessorThread extends Thread {
+public class ProcessorThread extends Thread {
 
     Packet input;
     CustomKey key;
@@ -26,12 +27,5 @@ class ProcessorThread extends Thread {
         this.key = key;
         this.recipientIP = recipientIP;
         this.start();
-    }
-}
-
-public class MTProcessor {
-
-    public static void process(Packet packet, CustomKey key, String recipientIP) {
-        new ProcessorThread(packet, key, recipientIP);
     }
 }

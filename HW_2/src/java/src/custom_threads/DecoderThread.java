@@ -1,10 +1,11 @@
-package server;
+package src.custom_threads;
 
-import org.example.CustomKey;
-import org.example.Packet;
-import org.example.PacketDecoder;
+import src.packet_handling.CustomKey;
+import src.packet_handling.Packet;
+import src.packet_handling.PacketDecoder;
+import src.server.MTProcessor;
 
-class DecoderThread extends Thread {
+public class DecoderThread extends Thread {
 
     private byte[] input;
     private CustomKey key;
@@ -23,12 +24,5 @@ class DecoderThread extends Thread {
         this.key = key;
         this.recipientIP = recipientIP;
         this.start();
-    }
-}
-
-public class MTDecoder {
-    int currentId = 0;
-    public static void decode(byte[] input, CustomKey key, String recipientIP) {
-        new DecoderThread(input, key, recipientIP);
     }
 }

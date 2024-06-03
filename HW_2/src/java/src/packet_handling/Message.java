@@ -1,8 +1,7 @@
-package org.example;
+package src.packet_handling;
 
 
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Message {

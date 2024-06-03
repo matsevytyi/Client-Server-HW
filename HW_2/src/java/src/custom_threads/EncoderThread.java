@@ -1,16 +1,18 @@
-package server;
+package src.custom_threads;
 
-import org.example.CustomKey;
-import org.example.Packet;
-import org.example.PacketEncoder;
+import src.packet_handling.CustomKey;
+import src.packet_handling.Packet;
+import src.packet_handling.PacketEncoder;
+import src.server.Sender;
 
-class EncoderThread extends Thread {
-    Packet packet;
-    CustomKey key;
+public class EncoderThread extends Thread {
+    private Packet packet;
+    private CustomKey key;
 
-    String message;
+    private String message;
 
     private String recipientIP;
+
 
 
 
@@ -27,11 +29,5 @@ class EncoderThread extends Thread {
         this.key = key;
         this.recipientIP = recipientIP;
         this.start();
-    }
-}
-public class MTEncoder {
-
-    public static void encode(Packet packet, CustomKey key, String recipientIP, String message) {
-        new EncoderThread(packet, key, recipientIP, message);
     }
 }
