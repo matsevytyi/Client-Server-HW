@@ -24,13 +24,13 @@ public class ReceiverUnitTest {
         try (MockedStatic<MTDecoder> mockedDecoder = Mockito.mockStatic(MTDecoder.class);
              MockedStatic<Client> mockedClient = Mockito.mockStatic(Client.class)) {
 
-            CustomKey mockKey = mock(CustomKey.class);
-            mockedClient.when(Client::getKey).thenReturn(mockKey);
+            CustomKey key = new CustomKey();
+            mockedClient.when(Client::getKey).thenReturn(key);
 
             // Start a thread to run the Reciever.receive() method
             Thread serverThread = new Thread(() -> {
                 try {
-                    Reciever.receive();
+                    Reciever.receive(key);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
