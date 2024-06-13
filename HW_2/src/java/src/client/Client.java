@@ -2,23 +2,15 @@ package src.client;
 
 
 // Importing required libraries
-import src.packet_handling.CustomKey;
+
+import org.example.CustomKey;
+import src.server.Server;
 
 import java.io.*;
 import java.net.*;
 
 // Main class
 public class Client {
-
-    static CustomKey key;
-
-    public static CustomKey getKey() {
-        return key;
-    }
-
-    public static void setKey(CustomKey key) {
-        Client.key = key;
-    }
 
 
     // Main driver method
@@ -59,7 +51,8 @@ public class Client {
     }
 
     public static void main(String[] args) {
-        launchClient(new CustomKey());
+        CustomKey key = new CustomKey("LAB_1/src/main/resources/key.txt");
+        launchClient(key);
     }
 }
 

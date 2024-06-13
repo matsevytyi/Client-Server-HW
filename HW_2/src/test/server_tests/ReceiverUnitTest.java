@@ -1,11 +1,12 @@
 package server_tests;
 
+import org.example.CustomKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import src.client.Client;
-import src.packet_handling.CustomKey;
+
 import src.server.MTDecoder;
 import src.server.Reciever;
 
@@ -25,7 +26,6 @@ public class ReceiverUnitTest {
              MockedStatic<Client> mockedClient = Mockito.mockStatic(Client.class)) {
 
             CustomKey key = new CustomKey();
-            mockedClient.when(Client::getKey).thenReturn(key);
 
             // Start a thread to run the Reciever.receive() method
             Thread serverThread = new Thread(() -> {

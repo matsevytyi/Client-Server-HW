@@ -1,14 +1,26 @@
 package src.server;
 
 
-import src.packet_handling.CustomKey;
+import org.example.CustomKey;
+import src.client.Client;
 
 public class Server {
+
+    static CustomKey key;
+
+    public static CustomKey getKey() {
+        return key;
+    }
+
+    public static void setKey(CustomKey key) {
+        Server.key = key;
+    }
 
 
     public static void main(String[] args) {
 
-        CustomKey key = new CustomKey();
+        key = new CustomKey();
+        key.saveToFile("LAB_1/src/main/resources/key.txt");
 
         try {
             Reciever.receive(key);

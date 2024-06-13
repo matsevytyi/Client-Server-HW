@@ -1,8 +1,8 @@
 package src.custom_threads;
 
-import src.packet_handling.CustomKey;
-import src.packet_handling.Packet;
-import src.packet_handling.PacketDecoder;
+import org.example.CustomKey;
+import org.example.Packet;
+import org.example.PacketDecoder;
 import src.server.MTProcessor;
 
 public class DecoderThread extends Thread {
@@ -16,6 +16,7 @@ public class DecoderThread extends Thread {
     public void run() {
         super.run();
         Packet decodedPacket = PacketDecoder.decodePacket(this.input, this.key.getSecretKey());
+        System.out.println("Received: " + decodedPacket.getMessage().getMessage() + " from " + recipientIP);
         MTProcessor.process(decodedPacket, key, recipientIP);
     }
 

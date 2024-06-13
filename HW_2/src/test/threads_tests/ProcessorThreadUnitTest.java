@@ -1,8 +1,8 @@
 package threads_tests;
 
+import org.example.CustomKey;
+import org.example.Packet;
 import src.custom_threads.ProcessorThread;
-import src.packet_handling.CustomKey;
-import src.packet_handling.Packet;
 import src.server.MTEncoder;
 
 import org.mockito.MockedStatic;
