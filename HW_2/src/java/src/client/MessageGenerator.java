@@ -10,7 +10,7 @@ import org.example.PacketEncoder;
 
 public interface MessageGenerator {
     public static byte[] generateMsg(CustomKey key) {
-        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "DONE").toBytes());
+        Packet packet = new Packet((byte) 1, 1, new Message(1, 1, "DONE").toBytes());
         return PacketEncoder.encodePacket(packet, key.getSecretKey());
     };
 }

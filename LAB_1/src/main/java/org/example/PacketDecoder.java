@@ -1,6 +1,7 @@
 package org.example;
 
 import javax.crypto.*;
+import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -41,7 +42,7 @@ public class PacketDecoder {
         if(!Arrays.equals(init_crc16, actual_crc16) || !Arrays.equals(init_crc16e, actual_crc16e))
             throw new IllegalArgumentException("Packet is broken: Crc16 validation error");
 
-        return new Packet(input[1], Arrays.copyOfRange(input, 2, 10), decryptedMessage);
+        return new Packet(input[1], ByteBuffer.wrap(Arrays.copyOfRange(input, 2, 10)).getLong(), decryptedMessage);
     }
 
     public static Message decodePacketMessage(byte[] input, SecretKey privateKey) {

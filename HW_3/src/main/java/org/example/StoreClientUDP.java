@@ -7,14 +7,13 @@ import java.net.*;
 import java.util.Base64;
 import java.util.Scanner;
 
-public class StoreClientTCP {
+public class StoreClientUDP {
     private String serverAddress;
     private int serverPort;
 
-    private int packetsSent = 0;
-    private int packetsReceived = 0;
+    long currentPacketID = 0;
 
-    public StoreClientTCP(String serverAddress, int serverPort) {
+    public StoreClientUDP(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
         this.serverPort = serverPort;
     }
@@ -30,29 +29,32 @@ public class StoreClientTCP {
 
             while(true){
                 writer.println(key.getEncodedKey());
-                packetsSent++;
                 String response = reader.readLine();
-                packetsReceived++;
                 if(response.equals("DONE")){
                     System.out.println("Handshake successful");
                     break;
                 }
             }
 
-            System.out.println("Enter message: ");
-
-            byte[] bytes = PacketEncoder.encodePacket(new Packet((byte) 1, 1, new Message(1, 1, "Hello").toBytes()), key.getSecretKey());
+            byte[] bytes = PacketEncoder.encodePacket(new Packet((byte) 1, currentPacketID, new Message(1, 1, "Hello").toBytes()), key.getSecretKey());
             System.out.println("Sent: " + Base64.getEncoder().encodeToString(bytes));
             writer.println(Base64.getEncoder().encodeToString(bytes));
             System.out.println("Waiting for response...");
 
             while (true) {
-                String response = reader.readLine();
-                packetsReceived++;
-                byte[] newBytes = Base64.getDecoder().decode(response);
-                System.out.println("Received: " + PacketDecoder.decodePacketMessage(newBytes, key.getSecretKey()).getMessage() + " from " + socket.getInetAddress().getHostAddress());
-                writer.println(Base64.getEncoder().encodeToString(newBytes));
-                packetsSent++;
+                String response;
+                do {
+                    response = reader.readLine();
+                    byte[] newBytes = Base64.getDecoder().decode(response);
+                    Packet packet = PacketDecoder.decodePacket(newBytes, key.getSecretKey());
+                    System.out.println("Received: " + packet.getMessage() + " from " + socket.getInetAddress().getHostAddress());
+                    if (packet.getbPktId() != currentPacketID + 1) {
+                        writer.println("Error");
+                    } else {
+                        packet.setbPktId(++currentPacketID);
+                        writer.println(Base64.getEncoder().encodeToString(newBytes));
+                    }
+                } while (response == "Error");
             }
         } catch (IOException e) {
             // try to connect again to the server (handling ConnectException)

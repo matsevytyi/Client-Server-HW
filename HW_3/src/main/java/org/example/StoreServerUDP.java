@@ -1,7 +1,6 @@
 package org.example;
 
 import src.server.MTDecoder;
-import src.server.MTEncoder;
 
 import java.io.*;
 import java.net.*;
@@ -9,11 +8,11 @@ import java.util.Base64;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-public class StoreServerTCP {
+public class StoreServerUDP {
     private ServerSocket serverSocket;
     private ExecutorService executorService;
 
-    public StoreServerTCP(int port) throws IOException {
+    public StoreServerUDP(int port) throws IOException {
         serverSocket = new ServerSocket(port);
         executorService = Executors.newCachedThreadPool();
         System.out.println("Server TCP started on port " + port);
@@ -33,20 +32,21 @@ public class StoreServerTCP {
     private static class ClientHandler implements Runnable {
         private Socket clientSocket;
 
+        long currentPacketID = 1;
+
         public ClientHandler(Socket clientSocket) {
             this.clientSocket = clientSocket;
         }
 
         @Override
         public void run() {
-            try (
-                 PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
+            try (PrintWriter writer = new PrintWriter(clientSocket.getOutputStream(), true);
                  BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
                  Scanner scanner = new Scanner(System.in)) {
 
-                 String destinationIP = clientSocket.getInetAddress().getHostAddress();
+                String destinationIP = clientSocket.getInetAddress().getHostAddress();
 
-                 CustomKey key = new CustomKey();
+                CustomKey key = new CustomKey();
 
                 while(true){
                     String response = reader.readLine();
@@ -60,11 +60,16 @@ public class StoreServerTCP {
                 }
 
                 while (true) {
-                    String response = reader.readLine();
-                    byte[] bytes = Base64.getDecoder().decode(response);
-                    //message is send in the end of the process invoked by MTDecoder (MTD -> MTP -> MTE -> Sender)
-                    MTDecoder.decode(bytes, key, 1, clientSocket);
-                    System.out.println("Received: " + response);
+                    String response = null;
+                    do {
+                        if (response == "Error") currentPacketID--;
+                        response = reader.readLine();
+                        byte[] bytes = Base64.getDecoder().decode(response);
+                        //message is send in the end of the process invoked by MTDecoder (MTD -> MTP -> MTE -> Sender)
+                        MTDecoder.decode(bytes, key, currentPacketID, clientSocket);
+                        currentPacketID++;
+                        System.out.println("Received: " + response);
+                    } while (response == "Error");
                 }
             } catch (IOException e) {
                 e.printStackTrace();

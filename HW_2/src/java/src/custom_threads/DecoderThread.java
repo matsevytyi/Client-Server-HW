@@ -12,7 +12,7 @@ public class DecoderThread extends Thread {
     private byte[] input;
     private CustomKey key;
 
-    private String recipientIP;
+    private long pktId;
 
     Socket clientSocket;
 
@@ -20,14 +20,14 @@ public class DecoderThread extends Thread {
     public void run() {
         super.run();
         Packet decodedPacket = PacketDecoder.decodePacket(this.input, this.key.getSecretKey());
-        System.out.println("Received: " + decodedPacket.getMessage().getMessage() + " from " + recipientIP);
-        MTProcessor.process(decodedPacket, key, recipientIP, clientSocket);
+        System.out.println("Received: " + decodedPacket.getMessage().getMessage() + " from " + clientSocket.getInetAddress().getHostAddress());
+        MTProcessor.process(decodedPacket, key, pktId, clientSocket);
     }
 
-    public DecoderThread(byte[] input, CustomKey key, String recipientIP, Socket clientSocket) {
+    public DecoderThread(byte[] input, CustomKey key, long pktId, Socket clientSocket) {
         this.input = input;
         this.key = key;
-        this.recipientIP = recipientIP;
+        this.pktId = pktId;
         this.clientSocket = clientSocket;
         this.start();
     }

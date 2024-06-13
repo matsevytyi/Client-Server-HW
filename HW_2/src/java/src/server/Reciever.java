@@ -56,7 +56,7 @@ public interface Reciever {
 
             System.out.println("Starting decoding...");
 
-            MTDecoder.decode(clientSocket.getInputStream().readAllBytes(), key, recipientIP, clientSocket);
+            MTDecoder.decode(clientSocket.getInputStream().readAllBytes(), key, 1, clientSocket);
 
             System.out.println("Decoding complete.");
 

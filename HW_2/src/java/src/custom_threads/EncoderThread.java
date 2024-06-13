@@ -13,8 +13,6 @@ public class EncoderThread extends Thread {
 
     private String message;
 
-    private String recipientIP;
-
     Socket clientSocket;
 
 
@@ -24,14 +22,13 @@ public class EncoderThread extends Thread {
         super.run();
         byte[] encoded = PacketEncoder.encodePacket(packet, key.getSecretKey());
         //logic
-        Sender.send(encoded, recipientIP, message, clientSocket);
+        Sender.send(encoded, message, clientSocket);
     }
 
-    public EncoderThread(Packet packet, CustomKey key, String recipientIP, String message, Socket clientSocket) {
+    public EncoderThread(Packet packet, CustomKey key, String message, Socket clientSocket) {
         this.message = message;
         this.packet = packet;
         this.key = key;
-        this.recipientIP = recipientIP;
         this.clientSocket = clientSocket;
         this.start();
     }

@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class MTEncoder {
 
-    public static void encode(Packet packet, CustomKey key, String recipientIP, String message, Socket clientSocket) {
-        new EncoderThread(packet, key, recipientIP, message, clientSocket);
+    public static void encode(Packet packet, CustomKey key, String message, Socket clientSocket) {
+        new EncoderThread(packet, key, message, clientSocket);
     }
 }

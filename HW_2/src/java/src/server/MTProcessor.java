@@ -8,7 +8,7 @@ import java.net.Socket;
 
 public class MTProcessor {
 
-    public static void process(Packet packet, CustomKey key, String recipientIP, Socket clientSocket) {
-        new ProcessorThread(packet, key, recipientIP, clientSocket);
+    public static void process(Packet packet, CustomKey key, long pktId, Socket clientSocket) {
+        new ProcessorThread(packet, key, pktId, clientSocket);
     }
 }

@@ -9,7 +9,7 @@ public class PacketEncoder {
 
     public static byte[] encodePacket(Packet packet, SecretKey publicKey) {
         byte bSrc = packet.getbSrc();
-        byte[] bPktId = packet.getbPktId();
+        long bPktId = packet.getbPktId();
         byte[] message = packet.getMessage().toBytes();
         // encrypt message
         message = encode(message, publicKey);
