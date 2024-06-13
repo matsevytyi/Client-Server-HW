@@ -1,8 +1,6 @@
 package src.server;
 
-import src.client.Client;
-import src.packet_handling.CustomKey;
-import src.server.MTDecoder;
+import org.example.CustomKey;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -58,7 +56,7 @@ public interface Reciever {
 
             System.out.println("Starting decoding...");
 
-            MTDecoder.decode(clientSocket.getInputStream().readAllBytes(), key, recipientIP);
+            MTDecoder.decode(clientSocket.getInputStream().readAllBytes(), key, recipientIP, clientSocket);
 
             System.out.println("Decoding complete.");
 

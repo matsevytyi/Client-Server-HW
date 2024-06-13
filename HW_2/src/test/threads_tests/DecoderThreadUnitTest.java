@@ -1,8 +1,8 @@
 package threads_tests;
 
-import src.packet_handling.CustomKey;
-import src.packet_handling.Packet;
-import src.packet_handling.PacketDecoder;
+import org.example.CustomKey;
+import org.example.Packet;
+import org.example.PacketDecoder;
 import src.custom_threads.DecoderThread;
 import src.server.MTProcessor;
 

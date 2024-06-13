@@ -1,8 +1,8 @@
 package server_tests;
 
-import src.packet_handling.CustomKey;
-import src.packet_handling.Message;
-import src.packet_handling.Packet;
+import org.example.CustomKey;
+import org.example.Message;
+import org.example.Packet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class MTEncoderUnitTest {
     @BeforeEach
     public void setUp() {
         customKey = new CustomKey();
-        packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes());
+        packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "Test message").toBytes());
         recipientIP = "127.0.0.1";
         message = "Test message";
     }

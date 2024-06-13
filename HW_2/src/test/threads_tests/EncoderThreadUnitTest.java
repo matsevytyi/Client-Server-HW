@@ -1,9 +1,9 @@
 package threads_tests;
 
+import org.example.CustomKey;
+import org.example.Packet;
+import org.example.PacketEncoder;
 import src.custom_threads.EncoderThread;
-import src.packet_handling.CustomKey;
-import src.packet_handling.Packet;
-import src.packet_handling.PacketEncoder;
 import src.server.Sender;
 
 

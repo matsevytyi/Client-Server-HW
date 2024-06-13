@@ -1,11 +1,12 @@
 package src.server;
 
-import src.packet_handling.CustomKey;
+import org.example.CustomKey;
 import src.custom_threads.DecoderThread;
 
+import java.net.Socket;
+
 public class MTDecoder {
-    int currentId = 0;
-    public static void decode(byte[] input, CustomKey key, String recipientIP) {
-        new DecoderThread(input, key, recipientIP);
+    public static void decode(byte[] input, CustomKey key, String recipientIP, Socket clientSocket) {
+        new DecoderThread(input, key, recipientIP, clientSocket);
     }
 }

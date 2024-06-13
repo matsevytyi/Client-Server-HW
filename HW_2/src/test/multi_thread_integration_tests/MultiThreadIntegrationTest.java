@@ -1,7 +1,7 @@
 package multi_thread_integration_tests;
 
+import org.example.CustomKey;
 import src.client.Client;
-import src.packet_handling.CustomKey;
 import src.server.Reciever;
 
 import org.junit.jupiter.api.Assertions;

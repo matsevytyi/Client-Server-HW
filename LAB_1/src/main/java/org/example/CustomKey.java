@@ -35,15 +35,22 @@ public class CustomKey {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-
         byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
-
-        // Rebuild the SecretKey from the binary data
         this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
     }
 
+    public CustomKey(String encodedKey, boolean isEncoded) {
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+
+
+    public String getEncodedKey() {
+        return Base64.getEncoder().encodeToString(secretKey.getEncoded());
+    }
+
     public void saveToFile(String filePath) {
-        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+        String encodedKey = getEncodedKey();
 
         // Write the Base64 String to a text file
         try (FileWriter writer = new FileWriter(filePath)) {

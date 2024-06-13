@@ -1,7 +1,7 @@
 package client_tests;
 
+import org.example.CustomKey;
 import src.client.MessageGenerator;
-import src.packet_handling.CustomKey;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
