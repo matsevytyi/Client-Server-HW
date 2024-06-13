@@ -2,10 +2,10 @@ package org.example;
 
 import javax.crypto.*;
 import java.security.InvalidKeyException;
-import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.util.Arrays;
+import java.util.Base64;
 
 public class PacketDecoder {
 
@@ -44,13 +44,18 @@ public class PacketDecoder {
         return new Packet(input[1], Arrays.copyOfRange(input, 2, 10), decryptedMessage);
     }
 
+    public static Message decodePacketMessage(byte[] input, SecretKey privateKey) {
+        return decodePacket(input, privateKey).getMessage();
+    }
+
 
     //decrypt function
 
     private static byte[] decrypt(byte[] data, SecretKey secretKey) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.DECRYPT_MODE, secretKey);
+            data = Base64.getDecoder().decode(data);
             return cipher.doFinal(data);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
                  IllegalBlockSizeException | BadPaddingException e) {

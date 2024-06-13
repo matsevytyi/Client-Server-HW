@@ -8,7 +8,6 @@ public class Packet {
     private byte bSrc;
     private byte[] bPktId; // 8 bytes
     private byte[] wLen; // 4 bytes
-    private byte[] wCrc16; // 2 bytes
 
     private byte[] bMsg; // wLen bytes
 

@@ -2,7 +2,14 @@ package org.example;
 
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.security.*;
+import java.util.Base64;
+import java.util.Scanner;
 
 public class CustomKey {
 
@@ -16,6 +23,33 @@ public class CustomKey {
             keyGenerator.init(keyBitSize, secureRandom);
             this.secretKey = keyGenerator.generateKey();
         } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public CustomKey(String filePath) {
+
+        String encodedKey;
+        try (Scanner scanner = new Scanner(new File(filePath))) {
+            encodedKey = scanner.nextLine();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        byte[] decodedKey = Base64.getDecoder().decode(encodedKey);
+
+        // Rebuild the SecretKey from the binary data
+        this.secretKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "AES");
+    }
+
+    public void saveToFile(String filePath) {
+        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+
+        // Write the Base64 String to a text file
+        try (FileWriter writer = new FileWriter(filePath)) {
+            writer.write(encodedKey);
+            System.out.println("SecretKey written to file: " + filePath);
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }

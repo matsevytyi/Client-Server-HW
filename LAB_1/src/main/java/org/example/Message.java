@@ -1,46 +1,48 @@
 package org.example;
 
-
-import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public class Message {
 
-    private String cType;
-    private String bUserId;
-    private byte[] message;
+    private int cType;
+    private int bUserId;
+    private String message;
 
-    public Message(String cType, String userID, byte[] message) {
+    public Message(int cType, int userID, String message) {
         this.cType = cType;
         this.bUserId = userID;
         this.message = message;
     }
 
     public Message(byte[] bytes) {
-        cType = new String(Arrays.copyOfRange(bytes, 0, 4), Charset.defaultCharset());
-        bUserId = new String(Arrays.copyOfRange(bytes, 4, 8));
-        message = Arrays.copyOfRange(bytes, 8, bytes.length);
+        this.cType = ByteBuffer.wrap(bytes, 0, 4).getInt();
+        bUserId = ByteBuffer.wrap(bytes, 4, 4).getInt();
+        message = new String(Arrays.copyOfRange(bytes, 8, bytes.length));
     }
 
     public byte[] toBytes() {
-        byte[] answer = new byte[8 + message.length];
-        System.arraycopy(cType.getBytes(), 0, answer, 0, 4);
-        System.arraycopy(bUserId.getBytes(), 0, answer, 4, 4);
-        System.arraycopy(message, 0, answer, 8, message.length);
-        return answer;
+        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8); // Convert message to byte array
+
+        ByteBuffer buffer = ByteBuffer.allocate(8 + messageBytes.length);
+        buffer.putInt(cType);           // Put cType as 4 bytes
+        buffer.putInt(bUserId);         // Put bUserId as 4 bytes
+        buffer.put(messageBytes);       // Put message bytes
+
+        return buffer.array();          // Get the underlying byte array
     }
 
 
-    public String getcType() {
+    public int getcType() {
         return cType;
     }
 
-    public String getbUserId() {
+    public int getbUserId() {
         return bUserId;
     }
 
-    public byte[] getMessage() {
+    public String getMessage() {
         return this.message;
     }
 }

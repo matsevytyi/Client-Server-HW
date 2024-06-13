@@ -13,7 +13,7 @@ public class PacketDecoderTests {
         SecretKey secretKey = new CustomKey().getSecretKey();
 
         // Create a packet
-        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes());
+        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "Command").toBytes());
         byte[] encoded = PacketEncoder.encodePacket(packet, secretKey);
 
 
@@ -26,7 +26,7 @@ public class PacketDecoderTests {
 
     @Test
     public void testExtractedMessage(){
-        byte[] testMessage = new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes();
+        byte[] testMessage = new Message(1, 1, "Command").toBytes();
 
         SecretKey secretKey = new CustomKey().getSecretKey();
 
@@ -41,7 +41,7 @@ public class PacketDecoderTests {
     @Test
     public void testIllegalFirstByte(){
         SecretKey secretKey = new CustomKey().getSecretKey();
-        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes());
+        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "Command").toBytes());
         byte[] encoded = PacketEncoder.encodePacket(packet, secretKey);
         encoded[0] += 1;
 
@@ -51,7 +51,7 @@ public class PacketDecoderTests {
     @Test
     public void testCrc16Error(){
         SecretKey secretKey = new CustomKey().getSecretKey();
-        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes());
+        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "Command").toBytes());
         byte[] encoded = PacketEncoder.encodePacket(packet, secretKey);
 
         encoded[14] += 1;
@@ -62,7 +62,7 @@ public class PacketDecoderTests {
     @Test
     public void testCrc16eError(){
         SecretKey secretKey = new CustomKey().getSecretKey();
-        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message("ping", "1234", new byte[]{1, 2, 3, 4, 5, 6, 7, 8}).toBytes());
+        Packet packet = new Packet((byte) 1, new byte[]{1, 2, 3, 4, 5, 6, 7, 8}, new Message(1, 1, "Command").toBytes());
         byte[] encoded = PacketEncoder.encodePacket(packet, secretKey);
 
         encoded[32] += 1;

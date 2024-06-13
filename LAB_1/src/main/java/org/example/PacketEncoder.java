@@ -2,6 +2,8 @@ package org.example;
 
 import javax.crypto.*;
 import java.security.*;
+import java.util.Arrays;
+import java.util.Base64;
 
 public class PacketEncoder {
 
@@ -17,9 +19,10 @@ public class PacketEncoder {
 
     private static byte[] encode(byte[] data, SecretKey secretKey) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/ECB/NoPadding");
+            Cipher cipher = Cipher.getInstance("AES");
             cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-            return cipher.doFinal(data);
+            data = cipher.doFinal(data);
+            return Base64.getEncoder().encode(data);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
                  IllegalBlockSizeException | BadPaddingException e) {
             throw new RuntimeException(e);
