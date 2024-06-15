@@ -78,7 +78,7 @@ public class StoreServerUDP {
     }
 
     public static void main(String[] args) throws IOException {
-        StoreServerTCP server = new StoreServerTCP(12345);
+        StoreServerUDP server = new StoreServerUDP(1234);
         server.start();
     }
 }

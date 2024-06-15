@@ -42,8 +42,8 @@ public class StoreClientUDP {
             System.out.println("Waiting for response...");
 
             while (true) {
-                String response;
-                do {
+                String response = reader.readLine();
+                while (response == "Error") {
                     response = reader.readLine();
                     byte[] newBytes = Base64.getDecoder().decode(response);
                     Packet packet = PacketDecoder.decodePacket(newBytes, key.getSecretKey());
@@ -54,7 +54,7 @@ public class StoreClientUDP {
                         packet.setbPktId(++currentPacketID);
                         writer.println(Base64.getEncoder().encodeToString(newBytes));
                     }
-                } while (response == "Error");
+                }
             }
         } catch (IOException e) {
             // try to connect again to the server (handling ConnectException)
@@ -70,7 +70,7 @@ public class StoreClientUDP {
     }
 
     public static void main(String[] args) {
-        StoreClientTCP client = new StoreClientTCP("127.0.0.1", 12345);
+        StoreClientUDP client = new StoreClientUDP("127.0.0.1", 1234);
         try {
             client.start();
         } catch (InterruptedException e) {
