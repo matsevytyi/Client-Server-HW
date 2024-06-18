@@ -23,7 +23,7 @@ public class Message {
     }
 
     public String toString() {
-        return "service.Message{" +
+        return "Message{" +
                 "cType=" + cType +
                 ", bUserId=" + bUserId +
                 ", message='" + message + '\'' +

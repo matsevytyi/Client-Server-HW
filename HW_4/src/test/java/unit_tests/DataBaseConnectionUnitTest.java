@@ -1,3 +1,5 @@
+package unit_tests;
+
 import database_access.DAO;
 import database_access.DBConnection;
 import database_access.DoConnection;
