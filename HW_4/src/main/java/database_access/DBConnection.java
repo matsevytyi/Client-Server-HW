@@ -6,14 +6,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-class DoConnection {
-    private static final String URL = "jdbc:postgresql://aws-0-eu-central-1.pooler.supabase.com:6543/postgres?user=postgres.qtncwvznrznqnrrdlkfb&password=StoreAutomation777!!";
-
-    public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL);
-    }
-}
-
 public class DBConnection {
 
     private ExecutorService executorService;
@@ -51,11 +43,11 @@ public class DBConnection {
         executorService.shutdown();
         try {
             // Wait a bit before current tasks terminate
-            if (!executorService.awaitTermination(30, TimeUnit.SECONDS)) {
+            if (!executorService.awaitTermination(5, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
 
                 // Cancel currently executing tasks
-                if (!executorService.awaitTermination(30, TimeUnit.SECONDS))
+                if (!executorService.awaitTermination(5, TimeUnit.SECONDS))
                     System.err.println("Executor service did not terminate");
             }
         } catch (InterruptedException ie) {
