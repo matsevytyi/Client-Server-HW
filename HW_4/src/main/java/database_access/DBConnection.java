@@ -1,4 +1,4 @@
-package org.example;
+package database_access;
 
 import java.sql.*;
 import java.util.concurrent.ExecutorService;
@@ -50,16 +50,15 @@ public class DBConnection {
     public void shutdown() {
         executorService.shutdown();
         try {
-            // Wait a while for existing tasks to terminate
-            if (!executorService.awaitTermination(60, TimeUnit.SECONDS)) {
+            // Wait a bit before current tasks terminate
+            if (!executorService.awaitTermination(30, TimeUnit.SECONDS)) {
                 executorService.shutdownNow();
 
                 // Cancel currently executing tasks
-                if (!executorService.awaitTermination(60, TimeUnit.SECONDS))
+                if (!executorService.awaitTermination(30, TimeUnit.SECONDS))
                     System.err.println("Executor service did not terminate");
             }
         } catch (InterruptedException ie) {
-            // (Re-)Cancel if the current thread also interrupted
             executorService.shutdownNow();
             // Preserve interrupt status
             Thread.currentThread().interrupt();

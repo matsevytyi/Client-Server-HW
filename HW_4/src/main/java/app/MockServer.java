@@ -1,13 +1,14 @@
-package org.example;
+package app;
+
+import database_access.DAO;
+import database_access.DBConnection;
+import entities.service.Message;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class MockServer {
 
-    public static void processRequest(Message request, DBConnection connection) {
+    public static String processRequest(Message request) {
 
         //switchCase, cType: 1 create, 2 read, 3 delete, 4 update, 5 filter
         //switchcase, create: message = "name price", read = "name", delete = "name", update = "name newName newPrice", filter = "minPrice maxPrice"
@@ -17,27 +18,22 @@ public class MockServer {
         switch (request.getcType()) {
             case 1:
                 params = request.getMessage();
-                DAO.createItem(params.split(" ")[0], Integer.parseInt(params.split(" ")[1]), connection);
-                break;
+                return DAO.createItem(params.split(" ")[0], Integer.parseInt(params.split(" ")[1]));
             case 2:
                 params = request.getMessage();
-                DAO.readItem(params, connection);
-                break;
+                 return DAO.readItem(params);
             case 3:
                 params = request.getMessage();
-                DAO.deleteItem(params, connection);
-                break;
+                return DAO.deleteItem(params);
             case 4:
                 params = request.getMessage();
-                DAO.updateItem(params.split(" ")[0], params.split(" ")[1], Integer.parseInt(params.split(" ")[2]), connection);
-                break;
+                return DAO.updateItem(params.split(" ")[0], params.split(" ")[1], Integer.parseInt(params.split(" ")[2]));
             case 5:
                 params = request.getMessage();
-                DAO.filterByPrice(Integer.parseInt(params.split(" ")[0]), Integer.parseInt(params.split(" ")[1]), connection);
-                break;
+                return DAO.filterByPrice(Integer.parseInt(params.split(" ")[0]), Integer.parseInt(params.split(" ")[1]));
             default:
                 System.out.println("received broken Message");
-                break;
+                return null;
         }
     }
 
@@ -72,7 +68,7 @@ public class MockServer {
 
         for (int i = 0; i < 10; i++) {
             Message request = generateMockRequest();
-            System.out.println("Generated " +request);
+            System.out.println("Generated " + request);
             mockRequests.add(request);
         }
 
@@ -82,7 +78,8 @@ public class MockServer {
         mockRequests.add(new Message(5, 0, "0 200"));
 
         for (Message request : mockRequests) {
-            processRequest(request, connection);
+            String query = processRequest(request);
+            connection.executeQuery(query);
         }
 
         connection.shutdown();

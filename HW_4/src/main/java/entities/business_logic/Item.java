@@ -1,4 +1,4 @@
-package org.example;
+package entities.business_logic;
 
 //Entity class fort item
 public class Item {

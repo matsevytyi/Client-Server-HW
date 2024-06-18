@@ -1,4 +1,4 @@
-package org.example;
+package entities.service;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -23,7 +23,7 @@ public class Message {
     }
 
     public String toString() {
-        return "Message{" +
+        return "service.Message{" +
                 "cType=" + cType +
                 ", bUserId=" + bUserId +
                 ", message='" + message + '\'' +
