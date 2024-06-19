@@ -3,8 +3,14 @@ package unit_tests;
 import database_access.DAO;
 import database_access.DBConnection;
 import database_access.DoConnection;
+import org.junit.Assert;
+import org.junit.Before;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -14,50 +20,39 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 public class DAOUnitTest {
 
+    @Mock
+    private ResultSet resultSet;
+
+    @Before
+    public void setUp() {
+        // Initialize mocks
+        MockitoAnnotations.openMocks(this);
+    }
+
     @Test
-    public void processResultTest() {
+    public void processResultTest() throws SQLException {
+        // Redirecting System.out to capture the output
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PrintStream printStream = new PrintStream(outputStream);
+        System.setOut(printStream);
 
-        try {
+        // Mocking ResultSet behavior
+        when(resultSet.next()).thenReturn(true, true, false); // First and second calls return true, third call returns false
+        when(resultSet.getString(2)).thenReturn("test");
+        when(resultSet.getInt(3)).thenReturn(100);
 
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            System.setOut(new PrintStream(outputStream));
+        // Calling the test method
+        DAO.processResult(resultSet);
 
-            DBConnection connection = new DBConnection();
+        // Capturing the output and asserting the expected result
+        String output = outputStream.toString().trim();
 
-            connection.executeQuery(DAO.deleteItem("test0"));
-            connection.executeQuery(DAO.createItem("test0", 100));
-
-            String checkQuery = DAO.readItem("test0");
-
-            Connection conn = DoConnection.getConnection();
-
-            PreparedStatement statement = conn.prepareStatement(checkQuery);
-            ResultSet resultSet = statement.executeQuery();
-
-            DAO.processResult(resultSet);
-
-            String answer = "";
-
-            while (resultSet.next()) answer = resultSet.getString(2);
-
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            Assertions.assertTrue(outputStream.toString().contains("executed"));
-            Assertions.assertTrue(outputStream.toString().contains(answer));
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-
+        Assert.assertEquals("Item received: test 100", output);
     }
 
     @Test
